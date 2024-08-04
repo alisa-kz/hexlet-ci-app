@@ -2,9 +2,16 @@ name: setup
 on: push
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@master
+      - uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
       - run: make setup
       - run: make lint
       - run: make test
